@@ -4,19 +4,20 @@ Linux Bash shell scripts to build U-Boot for OpenOCD board initialisation
 -------------------------------------------------------------------------
 
 Contains Bash shell scripts for building U-Boot (actually U-Boot-SPL) for use with OpenOCD to configure the
-Terasic DE-10 Nano dev kit.  We need to initialise the 1GB DDR3 SDRAM, setup clocks and PLLs according to the
-settings in the handoff files (folder hps_isw_handoff).  The handoff files is from my HPS UART controller HDL
-project and gets generated after synthesis (compile), so you may want to replace them with yours.
+Terasic DE-10 Nano dev kit.  Before programs can run off the SDRAM, we need to initialise the 1GB DDR3 SDRAM,
+setup clocks and PLLs according to the settings described by handoff files (folder hps_isw_handoff).  The
+handoff files is from my HPS UART controller HDL project, and gets updated after a Platform Designer (Qsys)
+generate, so you may want to replace them with yours.
 
-The U-Boot-SPL can be loaded into the HPS On-Chip RAM from OpenOCD, using the load_image command, and the
-SPL should configure and initialise the DE-10 Nano.  Then we can load a user program into SD-RAM and also
-debug it.
+U-Boot-SPL can be loaded into the On-Chip RAM (of the processor), directly from OpenOCD, using the load_image
+and resume command.  The SPL can then run and initialise the DE-10 Nano.  Then we can load and run a user
+program from SDRAM and debug it.
 
-In the past, when I first got the DE-10 Nano development board, I saw guides about bare-metal programming the
-ARM processor (HPS), but that always required ARM's DS-5 IDE, which is bundled with the Altera's EDS
-(Embedded Design Suite) tool.  There was a Community License working for only 30 days, which I used.
-ARM uses their own propietary GDB server debugger called D-STREAM but that stopped working after the license
-expired.  That is what lead me to find an open source free way to debug - sorry Arm, I am a hobbyist with
+In the past, when I first got the DE-10 Nano development board, I saw guides about bare-metal programming
+with the DE10-Nano, but that always required ARM's DS-5 IDE, which is bundled with the Altera's EDS
+(Embedded Design Suite) tool.  There was a Community License lasting only 30 days, which I used.
+ARM uses their own propietary GDB server/debugger called D-STREAM, but that stopped working after the license
+expired.  I decided to find an open source and free way to debug - sorry Arm, I am a hobbyist with
 small funds.
 
 Script notes:
@@ -76,7 +77,7 @@ some quick notes.
 First make sure you put U-Boot-SPL in your terminal working directory.  OpenOCD will search current
 directory for file.
 
-Run OpenOCD and connect to it.  If you want to use GDB then you know the drill, type monitor infront
+Run OpenOCD and connect to it.  If you want to use GDB then you know the usual, type monitor infront
 of each command.
 
 Here are some useful commands:
