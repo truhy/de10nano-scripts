@@ -30,7 +30,7 @@ toolchain or U-Boot versions.
 
 Quick steps:
 
-1. In your home directory, create a folder named DevTools for storing toolchain and U-Boot source zip
+1. In your home directory, create a folder named devtools for storing toolchain and U-Boot source zip
 
 2. Download the toolchain from:
   https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases
@@ -41,7 +41,7 @@ Quick steps:
       https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/tag/v12.2.1-1.2
       File: xpack-arm-none-eabi-gcc-12.2.1-1.2-linux-x64.tar.gz
 
-2. Decompress it to DevTools folder
+2. Decompress it to devtools folder
 
 3. Download U-Boot source code from:
   https://github.com/u-boot/u-boot/tags
@@ -58,7 +58,7 @@ Alternatively, download Intel/Altera's fork:
     Currently, the last stable branch version is (no RC label):
      https://github.com/altera-opensource/u-boot-socfpga/tree/socfpga_v2023.01
 
-4. Move the U-Boot source code zip to DevTools folder
+4. Move the U-Boot source code zip to devtools folder
 
 5. Start a terminal and change working directory to the scripts folder, then run ./prep_uboot.sh.
 This will unzip it into a new folder called software and also applies my patches
