@@ -65,7 +65,7 @@ OpenOCD documentation recommends disabling caches.  Although, the DE10-Nano proc
 
 ## Disabling the hardware WatchDog
 
-Under U-Boot SPL, the WatchDog is enabled by default and hardcode WatchDog timer resets every so often inside the code, instead of using an interrupt.  We need to disable it, otherwise HPS will reset when it reaches the hang function with an infinity while loop.  Again, I've patch the U-Boot vendor source file spl_gen5.c to disable it.
+Under U-Boot SPL, the WatchDog is enabled by default and manually resets the WatchDog timer on every so often lines of code, rather than using an interrupt.  We need to disable it, otherwise HPS will reset when it reaches the hang function with an infinity while loop.  Again, I've patch the U-Boot vendor source file spl_gen5.c to disable it.
 
 In the main U-Boot we don't have this problem, I'm not sure why yet, perhaps it disables it, or it services them using an interrupt handler.
 
