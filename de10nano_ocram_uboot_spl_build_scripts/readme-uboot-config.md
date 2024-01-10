@@ -1,6 +1,6 @@
 # Some notes on U-Boot-SPL configuration for OpenOCD
 
-Truong Hy.  26/08/2023
+Truong Hy.  10/01/2024
 
 ## U-Boot-SPL
 
@@ -46,7 +46,7 @@ U-Boot handoff files
 
 Board configuration rely on settings from you vendor (Intel in this case) and they require converting into source files (.c / .h), which are then merged and referenced from vendor U-Boot source code.  The vendor will provide their own tools or scripts for this process.  Specifically, for Cyclone V SoC the process involves converting the files from a folder in your Quartus Prime project: hps_isw_handoff.
 
-Intel/Altera likes to call this the hand-off files for the build process flow.  They've changed their tools a sometime ago and so there is an old build flow and now a new build flow.  In the new build flow, they have provided us with Python scripts included in their latest stable branch of Intel/Altera's U-Boot fork.  They are located inside:
+Intel/Altera likes to call this the handoff files for the build process flow.  They've changed their tools sometime ago and so there is an old build flow and now a new build flow.  In the new build flow, they have provided us with Python scripts included in their latest stable branch of Intel/Altera's U-Boot fork.  They are located inside:
 ```
 arch/arm/mach-socfpga/cv_bsp_generator
 ```
@@ -62,6 +62,13 @@ Anyway, my compile script will run this so you don't need to run them yourself.
 ## Disabling I-Cache and D-Cache
 
 OpenOCD documentation recommends disabling caches.  Although, the DE10-Nano processor system (or perhaps the boot ROM) will cold boot with the I-Cache enabled, and D-Cache disabled, I decided to patch U-Boot vendor source file spl_gen5.c to disable both caches.
+
+## Disabling the hardware WatchDog
+
+Under U-Boot SPL, the WatchDog is enabled by default and hardcode WatchDog timer resets every so often inside the code, instead of using an interrupt.  We need to disable it, otherwise HPS will reset when it reaches the hang function with an infinity while loop.  Again, I've patch the U-Boot vendor source file spl_gen5.c to disable it.
+
+In the main U-Boot we don't have this problem, I'm not sure why yet, perhaps it disables it, or it services them using an interrupt handler.
+
 
 ## Enabling the Cyclone V HPS bridges
 
