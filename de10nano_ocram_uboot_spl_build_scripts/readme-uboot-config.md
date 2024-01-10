@@ -6,15 +6,15 @@ Truong Hy.  26/08/2023
 
 The DE-10 Nano development board requires initialisations before the ARM Cortex-A9 can use some of its peripherals, e.g. the 1GB SD-RAM memory.  On a cold boot only a small 64kB OC-RAM is available to run code from.  Note, the On-Chip RAM is not inside the CPU cores, it is external to the cores but inside the HPS (Hard Processor System).
 
-The regular U-Boot elf is too big to load and run from OC-RAM, instead we can use the smaller U-Boot SPL elf for this, infact the SPL was coded for this purpose.
+The main U-Boot elf is too big to load and run from OC-RAM, instead we can use the smaller U-Boot SPL elf for this, infact the SPL was coded for this purpose.
 
 What is the difference between normal U-Boot and small U-Boot SPL?
 
-The regular U-Boot elf actually contains two boot loaders, so U-Boot SPL is included:
+The main U-Boot elf actually contains two boot loaders, so U-Boot SPL is included:
 1. U-Boot SPL (Secondary Program Loader, a low level loader for board initialisations)
 2. U-Boot (a higher level loader for booting linux kernel, etc)
 
-In normal cases you would use both, so the SPL starts first which then jumps to the regular U-Boot.  The difference is just that, U-Boot SPL is separate from regular U-Boot.
+In normal cases you would use both, so the SPL starts first which then jumps to the main U-Boot.  The difference is just that, U-Boot SPL is separate from main U-Boot.
 
 Where can I find U-Boot SPL?
 
@@ -27,12 +27,12 @@ There you will find:
 
 ## U-Boot devicetree binary (DTB)
 
-As you may already know, U-Boot has been using Devicetree configuration model for a while now - a feature also used by Linux Kernel for the embedded world. This enables replaceable or selectable configurations files (files with different configs for the same board) that can be selected at run-time, and without having to re-compile the whole of U-Boot again.
+As you may already know, U-Boot has been using devicetree configuration model for a while now - a feature also used by Linux Kernel for the embedded world. This enables replaceable or selectable configurations files (files with different configs for the same board) that can be selected at run-time, and without having to re-compile the whole of U-Boot again.
 
 See here:
 [U-Boot doc and devicetree](https://u-boot.readthedocs.io/en/latest/develop/devicetree/control.html)
 
-The downside is that you must now load a devicetree binary file .dtb for U-Boot to run.
+The downside is that you must now load a devicetree binary file .dtb for U-Boot SPL and main U-Boot to run.
 
 But, because we just want to use it for debugging purposes; be able to run U-Boot SPL from OpenOCD or GDB, and setup/initialise the board for us, it is not convenient to load a separate file.
 
