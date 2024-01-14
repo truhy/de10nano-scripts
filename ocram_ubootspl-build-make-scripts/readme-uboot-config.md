@@ -4,9 +4,9 @@ Truong Hy.  10/01/2024
 
 ## U-Boot-SPL
 
-The DE-10 Nano development board requires initialisations before the ARM Cortex-A9 can use some of its peripherals, e.g. the 1GB SD-RAM memory.  On a cold boot only a small 64kB OC-RAM is available to run code from.  Note, the On-Chip RAM is not inside the CPU cores, it is external to the cores but inside the HPS (Hard Processor System).
+The DE10-Nano development board requires initialisations before the ARM Cortex-A9 can use some of its peripherals, e.g. the 1GB SD-RAM memory.  On a cold boot only a small 64kB OCRAM (On-Chip RAM) is available to run code from.  Note, the OCRAM is not inside the CPU cores, it is external to the cores but inside the HPS (Hard Processor System).
 
-The main U-Boot elf is too big to load and run from OC-RAM, instead we can use the smaller U-Boot SPL elf for this, infact the SPL was coded for this purpose.
+The main U-Boot elf is too big to load and run from OCRAM, instead we can use the smaller U-Boot SPL elf for this, infact the SPL was coded for this purpose.
 
 What is the difference between normal U-Boot and small U-Boot SPL?
 
@@ -70,9 +70,9 @@ Under U-Boot SPL, the WatchDog is enabled by default and manually resets the Wat
 In the main U-Boot we don't have this problem, I'm not sure why yet, perhaps it disables it, or it services them using an interrupt handler.
 
 
-## Enabling the Cyclone V HPS bridges
+## Enabling the Cyclone V SoC HPS bridges
 
-The following Cyclone V interconnect bridges (system buses) are normally enabled by U-boot script (via U-Boot command: bridge enable) or running a command within linux:
+The following Cyclone V SoC interconnect bridges (system buses) are normally enabled by U-boot script (via U-Boot command: bridge enable) or running a command within linux:
 - F2H (FPGA-to-HPS)
 - H2F (HPS-to-FPGA)
 - L2F (LW-to-FPGA)
