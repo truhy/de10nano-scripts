@@ -51,10 +51,17 @@ load_image helloworld.elf
 resume 0x131c
 ```
 
+# Other useful commands
+
 Halt then print registers:
 ```
 halt
 reg
+```
+
+List targets and current state:
+```
+targets
 ```
 
 ## Connect with GDB
