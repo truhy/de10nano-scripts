@@ -51,7 +51,7 @@ load_image helloworld.elf
 resume 0x131c
 ```
 
-# Other useful commands
+### Some useful commands
 
 Halt then print registers:
 ```
