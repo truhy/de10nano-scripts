@@ -58,17 +58,12 @@ Run OpenOCD and connect to it.  If you want to use GDB then you know the usual, 
 
 ## Here are some useful commands
 
-==============================================
-
 To warm reset the DE-10 Nano processor system (HPS) from a terminal connected to OpenOCD:
 ```
 halt
 mww 0xffd05004 0x00100002
 ```
-
 Alternatively, you can just press the HPS warm reset button (KEY3) on the board - the one right next to the slider switches.
-
-==============================================
 
 To run U-Boot-SPL from a terminal connected to OpenOCD:
 ```
@@ -76,8 +71,6 @@ halt
 load_image u-boot-spl
 resume 0xffff0000
 ```
-
-==============================================
 
 To run U-Boot-SPL and a user application from a terminal connected to OpenOCD:
 ```
@@ -90,8 +83,6 @@ arm core_state arm
 load_image your_app.elf
 resume your_app_entry_point_address
 ```
-
-==============================================
 
 To get entry point of your elf, run readelf commandline tool from your toolchain, e.g. from a command prompt or command/shell terminal:
 ```
