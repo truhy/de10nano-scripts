@@ -10,11 +10,11 @@ The main U-Boot elf is too big to load and run from OCRAM, instead we can use th
 
 What is the difference between normal U-Boot and small U-Boot SPL?
 
-The main U-Boot elf actually contains two boot loaders, so U-Boot SPL is included:
+U-Boot actually consists of two boot separate loaders:
 1. U-Boot SPL (Secondary Program Loader, a low level loader for board initialisations)
-2. U-Boot (a higher level loader for booting linux kernel, etc)
+2. U-Boot (a higher level loader for booting linux kernel, etc) - this is the one with the built-in serial console
 
-In normal cases you would use both, so the SPL starts first which then jumps to the main U-Boot.  The difference is just that, U-Boot SPL is separate from main U-Boot.
+Both are used, the SPL starts executing first which then starts main U-Boot.  The difference is just that, U-Boot SPL is separate from main U-Boot.
 
 Where can I find U-Boot SPL?
 
