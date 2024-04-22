@@ -7,5 +7,5 @@ board here.  Not much now, but hopefully it will grow.
 
 Contains:
   - OpenOCD config scripts
-  - U-Boot-SPL Bash shell build scripts
+  - U-Boot-SPL Make build scripts (Linux only)
  

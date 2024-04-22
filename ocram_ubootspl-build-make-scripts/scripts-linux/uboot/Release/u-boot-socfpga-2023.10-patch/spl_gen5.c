@@ -31,6 +31,8 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+static struct bd_info bdata __attribute__ ((section(".data")));
+
 u32 spl_boot_device(void)
 {
 	const u32 bsel = readl(socfpga_get_sysmgr_addr() +
@@ -150,6 +152,8 @@ void board_init_f(ulong dummy)
 	/* enable console uart printing */
 	preloader_console_init();
 
+	gd->bd = &bdata;
+
 	ret = uclass_get_device(UCLASS_RAM, 0, &dev);
 	if (ret) {
 		debug("DRAM init failed: %d\n", ret);
@@ -189,9 +193,9 @@ void board_init_f(ulong dummy)
 	//clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000007);
 	//writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
 	
-	puts("Disabling I-Cache\n");
-	icache_disable();
-	puts("Disabling D-Cache\n");
-	dcache_disable();
+	//puts("Disabling I-Cache\n");
+	//icache_disable();
+	//puts("Disabling D-Cache\n");
+	//dcache_disable();
 	// End of patch
 }
