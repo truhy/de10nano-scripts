@@ -17,6 +17,10 @@ C:\devtools\xpack-openocd-0.12.0-2\share\openocd\scripts\interface
 The altera_de10nano.cfg is an optional script, which I don't use it, but it would go into the board scripts folder, for example:
 C:\devtools\xpack-openocd-0.12.0-2\share\openocd\scripts\board
 
+The USB Blaster II is the official programming JTAG adapter for Intel FPGAs, and it is already integrated on the DE10-Nano board. It requires a driver and the firmware file blaster_6810.hex to work. The driver and firmware file comes bundled with "Quartus Prime Programmer and Tools" and also "Quartus Prime Lite", and so you can install either one. If you're not going to use "Quartus Prime Lite", you may prefer the smaller size of "Quartus Prime Programmer and Tools". During the setup just make sure to include the driver as part of the installation.
+
+OpenOCD requires the path to the blaster_6810.hex file to be specified.  Since the installation of Quartus creates environment variable QUARTUS_ROOTDIR or QSYS_ROOTDIR for us, I've added TCL code to the target script (altera-usb-blaster2.cfg) which will make use these to find the path to the blaster_6810.hex file.
+
 # U-Boot SPL (preloader)
 
 You will need to run a preloader first, using OpenOCD or GDB, to configure and initialise the DE10-Nano board, otherwise you cannot do much with the HPS.
