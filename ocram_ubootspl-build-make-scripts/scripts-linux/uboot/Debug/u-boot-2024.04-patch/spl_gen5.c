@@ -171,18 +171,18 @@ void board_init_f(ulong dummy)
 	puts("Enabling L2F bridge\n");
 	clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000002);
 	// Not forced. Enable F2H only if FPGA is configured
-	//if(fpgamgr_test_fpga_ready()){
-	//	puts("Enabling F2H bridge\n");
-	//	clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000004);
-	//}else{
-	//	printf("Enabling F2H bridge - aborted, configure the FPGA first\n");
-	//}
-	//writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
+	if(fpgamgr_test_fpga_ready()){
+		puts("Enabling F2H bridge\n");
+		clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000004);
+	}else{
+		printf("Enabling F2H bridge - aborted, configure the FPGA first\n");
+	}
+	writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
 	
 	// Forced enable F2H
-	puts("Enabling F2H bridge (even if FPGA is not configured)\n");
-	clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000004);
-	writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
+	//puts("Enabling F2H bridge (even if FPGA is not configured)\n");
+	//clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000004);
+	//writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
 	
 	// Forced enable all
 	//puts("Enabling H2F+LWH2F+F2H bridges (even if FPGA is not configured)\n");

@@ -189,9 +189,9 @@ void board_init_f(ulong dummy)
 	//clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000007);
 	//writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
 	
-	//puts("Disabling I-Cache\n");
-	//icache_disable();
-	//puts("Disabling D-Cache\n");
-	//dcache_disable();
+	puts("Disabling I-Cache\n");
+	icache_disable();
+	puts("Disabling D-Cache\n");
+	dcache_disable();
 	// End of patch
 }
