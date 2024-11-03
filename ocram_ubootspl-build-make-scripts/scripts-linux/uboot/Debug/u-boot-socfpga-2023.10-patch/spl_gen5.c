@@ -164,34 +164,42 @@ void board_init_f(ulong dummy)
 	puts("Disabling WatchDog0\n");
 	socfpga_per_reset(SOCFPGA_RESET(L4WD0), 1);  // Disable watchdog0, i.e. put it into reset state
 	
-	// Not forced. If FPGA is not configured then this is aborted and no bridges enabled
+	// Altera's function does not force. If FPGA is not configured then this is aborted and no bridges enabled
 	//puts("Enabling H2F+L2F+F2H bridges (if FPGA is configured)\n");
 	//socfpga_bridges_reset(0);  // Enable all 3 bridges, i.e. put them out of reset
+
+	// Start of bridge settings
+	// ========================
 
 	// Enable H2F
 	puts("Enabling H2F bridge\n");
 	clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000001);
+	
 	// Enable LWH2F
 	puts("Enabling L2F bridge\n");
 	clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000002);
+	
 	// Not forced. Enable F2H only if FPGA is configured
-	if(fpgamgr_test_fpga_ready()){
-		puts("Enabling F2H bridge\n");
-		clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000004);
-	}else{
-		printf("Enabling F2H bridge - aborted, configure the FPGA first\n");
-	}
-	writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
+	//if(fpgamgr_test_fpga_ready()){
+	//	puts("Enabling F2H bridge\n");
+	//	clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000004);
+	//}else{
+	//	printf("Enabling F2H bridge - aborted, configure the FPGA first\n");
+	//}
 	
 	// Forced enable F2H
-	//puts("Enabling F2H bridge (even if FPGA is not configured)\n");
-	//clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000004);
-	//writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
-	
+	puts("Enabling F2H bridge (even if FPGA is not configured)\n");
+	clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000004);
+
 	// Forced enable all
 	//puts("Enabling H2F+LWH2F+F2H bridges (even if FPGA is not configured)\n");
 	//clrbits_le32(socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST, 0x00000007);
-	//writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
+	
+	// Apply bridge settings
+	writel(0x00000019, SOCFPGA_L3REGS_ADDRESS);
+	
+	// ======================
+	// End of bridge settings
 	
 	puts("Disabling I-Cache\n");
 	icache_disable();
