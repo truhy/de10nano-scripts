@@ -1,7 +1,7 @@
 # This is free script released into the public domain.
-# GNU make file v20241003 created by Truong Hy.
+# GNU make file v20241107 created by Truong Hy.
 #
-# Prepares the U-Boot source files for building U-Boot for the Intel Cyclone V SoC:
+# Prepares the U-Boot source files for building U-Boot for the Intel Cyclone V SoC FPGA:
 #   - uncompress U-Boot source
 #   - apply modified U-Boot files (overwrites U-Boot's default)
 #   - execute Altera's Python script, which re-generates HPS BSP files for U-Boot (overwrites U-Boot's default)
@@ -45,19 +45,14 @@ REL_UBOOT_OUT_PATH := $(UBOOT_OUT_PATH)/Release
 DBG_UBOOT_SRC_PATH := $(DBG_UBOOT_OUT_PATH)/u-boot
 REL_UBOOT_SRC_PATH := $(REL_UBOOT_OUT_PATH)/u-boot
 
-# =================================
-# U-Boot replacement modified files
-# =================================
+# ================================
+# U-Boot replacment modified files
+# ================================
 
 DBG_SRC_FILE1 := Debug/$(UBOOT_PATCH_FOLDER)/$(UBOOT_DEFCONFIG)
 DBG_DST_FILE1 := $(DBG_UBOOT_SRC_PATH)/configs/$(UBOOT_DEFCONFIG)
-DBG_SRC_FILE2 := Debug/$(UBOOT_PATCH_FOLDER)/spl_gen5.c
-DBG_DST_FILE2 := $(DBG_UBOOT_SRC_PATH)/arch/arm/mach-socfpga/spl_gen5.c
-
 REL_SRC_FILE1 := Release/$(UBOOT_PATCH_FOLDER)/$(UBOOT_DEFCONFIG)
 REL_DST_FILE1 := $(REL_UBOOT_SRC_PATH)/configs/$(UBOOT_DEFCONFIG)
-REL_SRC_FILE2 := Release/$(UBOOT_PATCH_FOLDER)/spl_gen5.c
-REL_DST_FILE2 := $(REL_UBOOT_SRC_PATH)/arch/arm/mach-socfpga/spl_gen5.c
 
 # ============
 # BSP settings
@@ -92,39 +87,35 @@ all: release
 
 # Clean sublevel 1 folder
 clean1:
-	@if [ -d "$(DBG_UBOOT_SRC_PATH)" ]; then echo rm -rf $(DBG_UBOOT_SRC_PATH); rm -rf $(DBG_UBOOT_SRC_PATH); fi
-	@if [ -d "$(REL_UBOOT_SRC_PATH)" ]; then echo rm -rf $(REL_UBOOT_SRC_PATH); rm -rf $(REL_UBOOT_SRC_PATH); fi
-	@if [ -d "$(DBG_UBOOT_OUT_PATH)" ] && [ -z "$$(ls -A $(DBG_UBOOT_OUT_PATH))" ]; then echo rm -df $(DBG_UBOOT_OUT_PATH); rm -df $(DBG_UBOOT_OUT_PATH); fi
-	@if [ -d "$(REL_UBOOT_OUT_PATH)" ] && [ -z "$$(ls -A $(REL_UBOOT_OUT_PATH))" ]; then echo rm -df $(REL_UBOOT_OUT_PATH); rm -df $(REL_UBOOT_OUT_PATH); fi
+	@if [ -d "$(DBG_UBOOT_SRC_PATH)" ]; then echo rm -rf "$(DBG_UBOOT_SRC_PATH)"; rm -rf "$(DBG_UBOOT_SRC_PATH)"; fi
+	@if [ -d "$(REL_UBOOT_SRC_PATH)" ]; then echo rm -rf "$(REL_UBOOT_SRC_PATH)"; rm -rf "$(REL_UBOOT_SRC_PATH)"; fi
+	@if [ -d "$(DBG_UBOOT_OUT_PATH)" ] && [ -z "$$(ls -A $(DBG_UBOOT_OUT_PATH))" ]; then echo rm -df "$(DBG_UBOOT_OUT_PATH)"; rm -df "$(DBG_UBOOT_OUT_PATH)"; fi
+	@if [ -d "$(REL_UBOOT_OUT_PATH)" ] && [ -z "$$(ls -A $(REL_UBOOT_OUT_PATH))" ]; then echo rm -df "$(REL_UBOOT_OUT_PATH)"; rm -df "$(REL_UBOOT_OUT_PATH)"; fi
 
 # Clean root folder
 clean: clean1
-	@if [ -d "$(UBOOT_OUT_PATH)" ] && [ -z "$$(ls -A $(UBOOT_OUT_PATH))" ]; then echo rm -df $(UBOOT_OUT_PATH); rm -df $(UBOOT_OUT_PATH); fi
+	@if [ -d "$(UBOOT_OUT_PATH)" ] && [ -z "$$(ls -A $(UBOOT_OUT_PATH))" ]; then echo rm -df "$(UBOOT_OUT_PATH)"; rm -df "$(UBOOT_OUT_PATH)"; fi
 
 # =============
 # Release rules
 # =============
 
-release: $(REL_DST_FILE1) $(REL_DST_FILE2) $(REL_UBOOT_QTS_PATH)/pll_config.h
+release: $(REL_DST_FILE1) $(REL_UBOOT_QTS_PATH)/pll_config.h
 
 # Uncompress U-Boot source
 $(REL_UBOOT_SRC_PATH)/Makefile:
-	mkdir -p $(REL_UBOOT_OUT_PATH)
-	$(UZ) $(UBOOT_ZIP) -d $(REL_UBOOT_OUT_PATH)
+	mkdir -p "$(REL_UBOOT_OUT_PATH)"
+	$(UZ) "$(UBOOT_ZIP)" -d "$(REL_UBOOT_OUT_PATH)"
 
 # Rename folder to a common name and create prep txt
 $(REL_UBOOT_SRC_DUMMY): $(REL_UBOOT_SRC_PATH)/Makefile
 	$(eval FIND_REL_UBOOT_SRC_PATH := $(shell find $(REL_UBOOT_OUT_PATH)/u*boot* -maxdepth 0 -mindepth 0 -type d))
-	mv $(FIND_REL_UBOOT_SRC_PATH) $(REL_UBOOT_SRC_PATH)
-	@echo "U-Boot source: $(UBOOT_ZIP)" > $(REL_UBOOT_SRC_DUMMY)
+	mv "$(FIND_REL_UBOOT_SRC_PATH)" "$(REL_UBOOT_SRC_PATH)"
+	@echo "U-Boot source: $(UBOOT_ZIP)" > "$(REL_UBOOT_SRC_DUMMY)"
 
-# Apply modified file
+# Apply modified files
 $(REL_DST_FILE1): $(REL_UBOOT_SRC_DUMMY)
-	cp -f $(REL_SRC_FILE1) $(REL_DST_FILE1)
-
-# Apply modified file
-$(REL_DST_FILE2): $(REL_UBOOT_SRC_DUMMY)
-	cp -f $(REL_SRC_FILE2) $(REL_DST_FILE2)
+	cp -f "$(REL_SRC_FILE1)" "$(REL_DST_FILE1)"
 
 # Apply BSP files
 $(REL_UBOOT_QTS_PATH)/pll_config.h: $(REL_UBOOT_SRC_DUMMY) $(HANDOFF)/hps.xml
@@ -134,26 +125,22 @@ $(REL_UBOOT_QTS_PATH)/pll_config.h: $(REL_UBOOT_SRC_DUMMY) $(HANDOFF)/hps.xml
 # Debug rules
 # ===========
 
-debug: $(DBG_DST_FILE1) $(DBG_DST_FILE2) $(DBG_UBOOT_QTS_PATH)/pll_config.h
+debug: $(DBG_DST_FILE1) $(DBG_UBOOT_QTS_PATH)/pll_config.h
 
 # Uncompress U-Boot source
 $(DBG_UBOOT_SRC_PATH)/Makefile:
-	mkdir -p $(DBG_UBOOT_OUT_PATH)
-	$(UZ) $(UBOOT_ZIP) -d $(DBG_UBOOT_OUT_PATH)
+	mkdir -p "$(DBG_UBOOT_OUT_PATH)"
+	$(UZ) "$(UBOOT_ZIP)" -d "$(DBG_UBOOT_OUT_PATH)"
 
 # Rename folder to a common name and create prerequite dummy file
 $(DBG_UBOOT_SRC_DUMMY): $(DBG_UBOOT_SRC_PATH)/Makefile
 	$(eval FIND_DBG_UBOOT_SRC_PATH := $(shell find $(DBG_UBOOT_OUT_PATH)/u*boot* -maxdepth 0 -mindepth 0 -type d))
-	mv $(FIND_DBG_UBOOT_SRC_PATH) $(DBG_UBOOT_SRC_PATH)
-	@echo "U-Boot source: $(UBOOT_ZIP)" > $(DBG_UBOOT_SRC_DUMMY)
+	mv "$(FIND_DBG_UBOOT_SRC_PATH)" "$(DBG_UBOOT_SRC_PATH)"
+	@echo "U-Boot source: $(UBOOT_ZIP)" > "$(DBG_UBOOT_SRC_DUMMY)"
 
-# Apply modified file
+# Apply modified files
 $(DBG_DST_FILE1): $(DBG_UBOOT_SRC_DUMMY)
-	cp -f $(DBG_SRC_FILE1) $(DBG_DST_FILE1)
-
-# Apply modified file
-$(DBG_DST_FILE2): $(DBG_UBOOT_SRC_DUMMY)
-	cp -f $(DBG_SRC_FILE2) $(DBG_DST_FILE2)
+	cp -f "$(DBG_SRC_FILE1)" "$(DBG_DST_FILE1)"
 
 # Apply BSP files
 $(DBG_UBOOT_QTS_PATH)/pll_config.h: $(DBG_UBOOT_SRC_DUMMY) $(HANDOFF)/hps.xml

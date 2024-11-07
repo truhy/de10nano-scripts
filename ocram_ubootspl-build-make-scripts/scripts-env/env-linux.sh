@@ -9,9 +9,9 @@ SCRIPT_PATH="$(dirname "$SCRIPT_PATH")"
 TOOLCHAIN_PATH=~/devtools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin
 OPENOCD_PATH=~/devtools/xpack-openocd-0.12.0-2/bin
 
-# Bare-metal settings
-export BM_OUT_PATH=$SCRIPT_PATH
-export BM_HOME_PATH=$SCRIPT_PATH
+# Application settings
+export APP_HOME_PATH=$SCRIPT_PATH
+export APP_OUT_PATH=.
 
 # U-Boot settings
 export UBOOT_OUT_PATH=$SCRIPT_PATH
@@ -49,6 +49,9 @@ export UBOOT_QTS_FOLDER=board/terasic/de10-nano/qts
 #export UBOOT_QTS_FOLDER=board/terasic/sockit/qts
 export ARCH=arm
 export CROSS_COMPILE=arm-none-eabi-
+
+# Other stuff
+export APP_OUT_FULL_PATH=$(realpath -s "$APP_OUT_PATH")
 
 # Search path settings
 export PATH=$PATH:$SCRIPT_PATH/scripts-env:$SCRIPT_PATH/scripts-linux

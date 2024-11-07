@@ -33,8 +33,8 @@ $(error Building U-Boot is not supported natively in Windows, use WSL2, Cygwin o
 endif
 
 # These variables are assumed to be set already
-ifndef BM_OUT_PATH
-$(error BM_OUT_PATH environment variable is not set)
+ifndef APP_OUT_PATH
+$(error APP_OUT_PATH environment variable is not set)
 endif
 ifndef UBOOT_DEFCONFIG
 $(error UBOOT_DEFCONFIG env. variable not set, e.g. export UBOOT_DEFCONFIG=socfpga_de10_nano_defconfig)
@@ -45,7 +45,7 @@ endif
 
 # Convert back-slashes
 ifeq ($(OS),Windows_NT)
-BM_OUT_PATH := $(subst \,/,$(BM_OUT_PATH))
+APP_OUT_PATH := $(subst \,/,$(APP_OUT_PATH))
 UBOOT_OUT_PATH := $(subst \,/,$(UBOOT_OUT_PATH))
 endif
 
@@ -63,7 +63,7 @@ DBG_UBOOT_IN_PATH := $(UBOOT_IN_PATH)/Debug
 DBG_UBOOT_OUT_PATH := $(UBOOT_OUT_PATH)/Debug
 DBG_UBOOT_SRC_PATH := $(DBG_UBOOT_OUT_PATH)/u-boot
 DBG_UBOOT_SUB_PATH := $(DBG_UBOOT_OUT_PATH)/ub-out
-DBG_UBOOT_CP_PATH := $(BM_OUT_PATH)/Debug
+DBG_UBOOT_CP_PATH := $(APP_OUT_PATH)/Debug
 
 # =========================
 # U-Boot settings (Release)
@@ -73,7 +73,7 @@ REL_UBOOT_IN_PATH := $(UBOOT_IN_PATH)/Release
 REL_UBOOT_OUT_PATH := $(UBOOT_OUT_PATH)/Release
 REL_UBOOT_SRC_PATH := $(REL_UBOOT_OUT_PATH)/u-boot
 REL_UBOOT_SUB_PATH := $(REL_UBOOT_OUT_PATH)/ub-out
-REL_UBOOT_CP_PATH := $(BM_OUT_PATH)/Release
+REL_UBOOT_CP_PATH := $(APP_OUT_PATH)/Release
 
 # ===========
 # Build rules
@@ -108,16 +108,16 @@ help:
 clean:
 ifneq ($(OS),Windows_NT)
 	@if [ -d "$(UBOOT_OUT_PATH)" ]; then \
-		if [ -d "$(DBG_UBOOT_SUB_PATH)" ]; then echo rm -rf $(DBG_UBOOT_SUB_PATH); rm -rf $(DBG_UBOOT_SUB_PATH); fi; \
-		if [ -d "$(REL_UBOOT_SUB_PATH)" ]; then echo rm -rf $(REL_UBOOT_SUB_PATH); rm -rf $(REL_UBOOT_SUB_PATH); fi; \
-		if [ -d "$(DBG_UBOOT_SRC_PATH)/Makefile)" ]; then make -C $(DBG_UBOOT_SRC_PATH) --no-print-directory clean; fi; \
-		make -C $(UBOOT_IN_PATH) --no-print-directory -f Makefile-prep-ub.mk clean; \
+		if [ -d "$(DBG_UBOOT_SUB_PATH)" ]; then echo rm -rf "$(DBG_UBOOT_SUB_PATH)"; rm -rf "$(DBG_UBOOT_SUB_PATH)"; fi; \
+		if [ -d "$(REL_UBOOT_SUB_PATH)" ]; then echo rm -rf "$(REL_UBOOT_SUB_PATH)"; rm -rf "$(REL_UBOOT_SUB_PATH)"; fi; \
+		if [ -d "$(DBG_UBOOT_SRC_PATH)/Makefile)" ]; then make -C "$(DBG_UBOOT_SRC_PATH)" --no-print-directory clean; fi; \
+		make -C "$(UBOOT_IN_PATH)" --no-print-directory -f Makefile-prep-ub.mk clean; \
 	fi
-	@if [ -d "$(BM_OUT_PATH)" ]; then \
-		if [ -f "$(DBG_UBOOT_CP_PATH)/u-boot-spl" ]; then echo rm -f $(DBG_UBOOT_CP_PATH)/u-boot-spl; rm -f $(DBG_UBOOT_CP_PATH)/u-boot-spl; fi; \
-		if [ -f "$(REL_UBOOT_CP_PATH)/u-boot-spl" ]; then echo rm -f $(REL_UBOOT_CP_PATH)/u-boot-spl; rm -f $(REL_UBOOT_CP_PATH)/u-boot-spl; fi; \
-		if [ -d "$(DBG_UBOOT_CP_PATH)" ]; then echo rm -df $(DBG_UBOOT_CP_PATH); rm -df $(DBG_UBOOT_CP_PATH); fi; \
-		if [ -d "$(REL_UBOOT_CP_PATH)" ]; then echo rm -df $(REL_UBOOT_CP_PATH); rm -df $(REL_UBOOT_CP_PATH); fi; \
+	@if [ -d "$(APP_OUT_PATH)" ]; then \
+		if [ -f "$(DBG_UBOOT_CP_PATH)/u-boot-spl" ]; then echo rm -f "$(DBG_UBOOT_CP_PATH)/u-boot-spl"; rm -f "$(DBG_UBOOT_CP_PATH)/u-boot-spl"; fi; \
+		if [ -f "$(REL_UBOOT_CP_PATH)/u-boot-spl" ]; then echo rm -f "$(REL_UBOOT_CP_PATH)/u-boot-spl"; rm -f "$(REL_UBOOT_CP_PATH)/u-boot-spl"; fi; \
+		if [ -d "$(DBG_UBOOT_CP_PATH)" ]; then echo rm -df "$(DBG_UBOOT_CP_PATH)"; rm -df "$(DBG_UBOOT_CP_PATH)"; fi; \
+		if [ -d "$(REL_UBOOT_CP_PATH)" ]; then echo rm -df "$(REL_UBOOT_CP_PATH)"; rm -df "$(REL_UBOOT_CP_PATH)"; fi; \
 	fi
 endif
 
@@ -129,12 +129,12 @@ endif
 cleantemp:
 ifneq ($(OS),Windows_NT)
 	@if [ -d "$(UBOOT_OUT_PATH)" ]; then \
-		if [ -d "$(DBG_UBOOT_SRC_PATH)/Makefile)" ]; then make -C $(DBG_UBOOT_SRC_PATH) --no-print-directory clean; fi; \
-		make -C $(UBOOT_IN_PATH) --no-print-directory -f Makefile-prep-ub.mk clean; \
+		if [ -d "$(DBG_UBOOT_SRC_PATH)/Makefile)" ]; then make -C "$(DBG_UBOOT_SRC_PATH)" --no-print-directory clean; fi; \
+		make -C "$(UBOOT_IN_PATH)" --no-print-directory -f Makefile-prep-ub.mk clean; \
 	fi
-	@if [ -d "$(BM_OUT_PATH)" ]; then \
-		if [ -f "$(DBG_UBOOT_CP_PATH)/u-boot-spl" ]; then echo rm -f $(DBG_UBOOT_CP_PATH)/u-boot-spl; rm -f $(DBG_UBOOT_CP_PATH)/u-boot-spl; fi; \
-		if [ -f "$(REL_UBOOT_CP_PATH)/u-boot-spl" ]; then echo rm -f $(REL_UBOOT_CP_PATH)/u-boot-spl; rm -f $(REL_UBOOT_CP_PATH)/u-boot-spl; fi; \
+	@if [ -d "$(APP_OUT_PATH)" ]; then \
+		if [ -f "$(DBG_UBOOT_CP_PATH)/u-boot-spl" ]; then echo rm -f "$(DBG_UBOOT_CP_PATH)/u-boot-spl"; rm -f "$(DBG_UBOOT_CP_PATH)/u-boot-spl"; fi; \
+		if [ -f "$(REL_UBOOT_CP_PATH)/u-boot-spl" ]; then echo rm -f "$(REL_UBOOT_CP_PATH)/u-boot-spl"; rm -f "$(REL_UBOOT_CP_PATH)/u-boot-spl"; fi; \
 	fi
 endif
 
@@ -156,30 +156,30 @@ release: rel_update_uboot
 
 dbg_update_uboot:
 	@echo "Running make to prepare U-Boot"
-	@make -C $(UBOOT_IN_PATH) --no-print-directory -f Makefile-prep-ub.mk debug
+	@make -C "$(UBOOT_IN_PATH)" --no-print-directory -f Makefile-prep-ub.mk debug
 	@echo ""
 	@echo "Running make from U-Boot source"
-	@make -C $(DBG_UBOOT_SRC_PATH) --no-print-directory $(UBOOT_DEFCONFIG)
-	@make -C $(DBG_UBOOT_SRC_PATH) --no-print-directory -j 8
-ifneq ($(UB_OUT_PATH),$(BM_OUT_PATH))
+	@make -C "$(DBG_UBOOT_SRC_PATH)" --no-print-directory $(UBOOT_DEFCONFIG)
+	@make -C "$(DBG_UBOOT_SRC_PATH)" --no-print-directory -j 8
+ifneq ($(UB_OUT_PATH),$(APP_OUT_PATH))
 	@if [ -f "$(DBG_UBOOT_SRC_PATH)/spl/u-boot-spl" ]; then \
-		mkdir -p $(DBG_UBOOT_CP_PATH); \
-		cp -f -u $(DBG_UBOOT_SRC_PATH)/spl/u-boot-spl $(DBG_UBOOT_CP_PATH); \
-		echo Copied to: $(DBG_UBOOT_CP_PATH)/u-boot-spl; \
+		mkdir -p "$(DBG_UBOOT_CP_PATH)"; \
+		cp -f -u "$(DBG_UBOOT_SRC_PATH)/spl/u-boot-spl" "$(DBG_UBOOT_CP_PATH)"; \
+		echo Copied to: "$(DBG_UBOOT_CP_PATH)/u-boot-spl"; \
 	fi
 endif
 
 rel_update_uboot:
 	@echo "Running make to prepare U-Boot"
-	@make -C $(UBOOT_IN_PATH) --no-print-directory -f Makefile-prep-ub.mk release
+	@make -C "$(UBOOT_IN_PATH)" --no-print-directory -f Makefile-prep-ub.mk release
 	@echo ""
 	@echo "Running make from U-Boot source"
-	@make -C $(REL_UBOOT_SRC_PATH) --no-print-directory $(UBOOT_DEFCONFIG)
-	@make -C $(REL_UBOOT_SRC_PATH) --no-print-directory -j 8
-ifneq ($(UB_OUT_PATH),$(BM_OUT_PATH))
+	@make -C "$(REL_UBOOT_SRC_PATH)" --no-print-directory $(UBOOT_DEFCONFIG)
+	@make -C "$(REL_UBOOT_SRC_PATH)" --no-print-directory -j 8
+ifneq ($(UB_OUT_PATH),$(APP_OUT_PATH))
 	@if [ -f "$(REL_UBOOT_SRC_PATH)/spl/u-boot-spl" ]; then \
-		mkdir -p $(REL_UBOOT_CP_PATH); \
-		cp -f -u $(REL_UBOOT_SRC_PATH)/spl/u-boot-spl $(REL_UBOOT_CP_PATH); \
-		echo Copied to: $(REL_UBOOT_CP_PATH)/u-boot-spl; \
+		mkdir -p "$(REL_UBOOT_CP_PATH)"; \
+		cp -f -u "$(REL_UBOOT_SRC_PATH)/spl/u-boot-spl" "$(REL_UBOOT_CP_PATH)"; \
+		echo Copied to: "$(REL_UBOOT_CP_PATH)/u-boot-spl"; \
 	fi
 endif
