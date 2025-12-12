@@ -54,8 +54,13 @@ REL_UBOOT_SRC_PATH := $(REL_UBOOT_OUT_PATH)/u-boot
 
 DBG_SRC_FILE1 := Debug/$(UBOOT_PATCH_FOLDER)/$(UBOOT_DEFCONFIG)
 DBG_DST_FILE1 := $(DBG_UBOOT_SRC_PATH)/configs/$(UBOOT_DEFCONFIG)
+DBG_SRC_FILE2 := Debug/$(UBOOT_PATCH_FOLDER)/spl_gen5.c
+DBG_DST_FILE2 := $(DBG_UBOOT_SRC_PATH)/arch/arm/mach-socfpga/spl_gen5.c
+
 REL_SRC_FILE1 := Release/$(UBOOT_PATCH_FOLDER)/$(UBOOT_DEFCONFIG)
 REL_DST_FILE1 := $(REL_UBOOT_SRC_PATH)/configs/$(UBOOT_DEFCONFIG)
+REL_SRC_FILE2 := Release/$(UBOOT_PATCH_FOLDER)/spl_gen5.c
+REL_DST_FILE2 := $(REL_UBOOT_SRC_PATH)/arch/arm/mach-socfpga/spl_gen5.c
 
 # ============
 # BSP settings
@@ -103,7 +108,7 @@ clean: clean1
 # Release rules
 # =============
 
-release: $(REL_DST_FILE1) $(REL_UBOOT_QTS_PATH)/pll_config.h
+release: $(REL_DST_FILE1) $(REL_DST_FILE2) $(REL_UBOOT_QTS_PATH)/pll_config.h
 
 # Uncompress U-Boot source
 $(REL_UBOOT_SRC_PATH)/Makefile:
@@ -116,9 +121,13 @@ $(REL_UBOOT_SRC_DUMMY): $(REL_UBOOT_SRC_PATH)/Makefile
 	mv "$(FIND_REL_UBOOT_SRC_PATH)" "$(REL_UBOOT_SRC_PATH)"
 	@echo "U-Boot source: $(UBOOT_ZIP)" > "$(REL_UBOOT_SRC_DUMMY)"
 
-# Apply modified files
+# Apply modified file
 $(REL_DST_FILE1): $(REL_UBOOT_SRC_DUMMY)
 	cp -f "$(REL_SRC_FILE1)" "$(REL_DST_FILE1)"
+	
+# Apply modified file
+$(REL_DST_FILE2): $(REL_UBOOT_SRC_DUMMY)
+	cp -f "$(REL_SRC_FILE2)" "$(REL_DST_FILE2)"
 
 # Apply BSP files
 $(REL_UBOOT_QTS_PATH)/pll_config.h: $(REL_UBOOT_SRC_DUMMY) $(HANDOFF)/hps.xml
@@ -128,7 +137,7 @@ $(REL_UBOOT_QTS_PATH)/pll_config.h: $(REL_UBOOT_SRC_DUMMY) $(HANDOFF)/hps.xml
 # Debug rules
 # ===========
 
-debug: $(DBG_DST_FILE1) $(DBG_UBOOT_QTS_PATH)/pll_config.h
+debug: $(DBG_DST_FILE1) $(DBG_DST_FILE2) $(DBG_UBOOT_QTS_PATH)/pll_config.h
 
 # Uncompress U-Boot source
 $(DBG_UBOOT_SRC_PATH)/Makefile:
@@ -141,9 +150,13 @@ $(DBG_UBOOT_SRC_DUMMY): $(DBG_UBOOT_SRC_PATH)/Makefile
 	mv "$(FIND_DBG_UBOOT_SRC_PATH)" "$(DBG_UBOOT_SRC_PATH)"
 	@echo "U-Boot source: $(UBOOT_ZIP)" > "$(DBG_UBOOT_SRC_DUMMY)"
 
-# Apply modified files
+# Apply modified file
 $(DBG_DST_FILE1): $(DBG_UBOOT_SRC_DUMMY)
 	cp -f "$(DBG_SRC_FILE1)" "$(DBG_DST_FILE1)"
+	
+# Apply modified file
+$(DBG_DST_FILE2): $(DBG_UBOOT_SRC_DUMMY)
+	cp -f "$(DBG_SRC_FILE2)" "$(DBG_DST_FILE2)"
 
 # Apply BSP files
 $(DBG_UBOOT_QTS_PATH)/pll_config.h: $(DBG_UBOOT_SRC_DUMMY) $(HANDOFF)/hps.xml

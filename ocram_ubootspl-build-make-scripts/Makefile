@@ -1,5 +1,5 @@
 # This is free script released into the public domain.
-# GNU make file v20240114 created by Truong Hy.
+# GNU make file v20251212 created by Truong Hy.
 #
 # Builds U-Boot for the DE10-Nano development board (contains Intel Cyclone V SoC).
 #
