@@ -21,9 +21,9 @@ All script settings are placed inside the "scripts-env" folder, so edit the file
 
   Hints:
     You may need to click on Assets, and Show all x files.
-    The version I used is v12.2.1-1.2:
-      https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/tag/v13.2.1-1.1/
-      File: xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64.zip
+    The version I used is:
+      https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/tag/v14.2.1-1.1
+      File: xpack-arm-none-eabi-gcc-14.2.1-1.1-win32-x64.zip
 			
 	Alternatively, download Arm's GNU toolchain for Arm:
 	https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
@@ -34,20 +34,21 @@ All script settings are placed inside the "scripts-env" folder, so edit the file
   https://github.com/u-boot/u-boot/tags
 
   Hints:
-    The source code version I used is v2024.04:
-      https://github.com/u-boot/u-boot/tree/v2024.04
-      File: u-boot-2024.04.zip
-      
-Alternatively, download Intel/Altera's fork:
-  https://github.com/altera-opensource/u-boot-socfpga
+    The source code version I used is Intel/Altera's fork:
+		https://github.com/altera-fpga/u-boot-socfpga/tree/socfpga_v2025.07
+		
+	Alternatively, official U-Boot source:
+		https://github.com/u-boot/u-boot
 
-4. Move the U-Boot source code zip to ~/devtools folder, or if you're using WSL then start File Explorer, you should see the WSL Linux/Ubuntu mounted drive, copy zip to home/yourusername/devtools
+4. Edit the settings found inside the scripts-env folder to suit your tool paths
 
-5. Start a terminal and change working directory to the folder with Makefile and type in make debug
+5. Move the U-Boot source code zip to ~/devtools folder, or if you're using WSL then start File Explorer, you should see the WSL Linux/Ubuntu mounted drive, copy zip to home/yourusername/devtools
+
+6. Start a terminal and change working directory to the folder with Makefile and type in make
 This will unzip it into a new folder called software and also applies my patches
 
 If everything is ok you should find the compiled U-Boot-SPL elf file:
-Debug/u-boot-spl
+Release/u-boot-spl
 
 ## Running with OpenOCD
 
