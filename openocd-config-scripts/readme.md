@@ -4,7 +4,8 @@ Enclosed is OpenOCD scripts for Intel/Terasic DE10-Nano development board:
 
 | File                              | Description                                         |
 | --------------------------------- | --------------------------------------------------- |
-| target/altera_fpgasoc_de.cfg      | Target setup TCL script                             |
+| target/altera_fpgasoc_de.cfg      | Target setup TCL script for single core (core 0)    |
+| target/altera_fpgasoc_de_dual.cfg | Target setup TCL script for core 0 and core 1       |
 | interface/altera-usb-blaster2.cfg | JTAG adapter interface setup TCL script             |
 | board/altera_de10nano.cfg         | Board setup TCL script                              |
 
