@@ -9,7 +9,7 @@ Enclosed is OpenOCD scripts for Intel/Terasic DE10-Nano development board:
 | interface/altera-usb-blaster2.cfg | JTAG adapter interface setup TCL script             |
 | board/altera_de10nano.cfg         | Board setup TCL script                              |
 
-Copy the altera_fpgasoc_de.cfg to your OpenOCD target scripts folder, for example:
+Copy the altera_fpgasoc_de.cfg & target/altera_fpgasoc_de_dual.cfg to your OpenOCD target scripts folder, for example:
 C:\devtools\xpack-openocd-0.12.0-2\share\openocd\scripts\target
 
 Copy the altera-usb-blaster2.cfg to your OpenOCD interface scripts folder, for example:
