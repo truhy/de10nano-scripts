@@ -43,7 +43,7 @@ Below assumes the u-boot-spl-nocache and helloworld.elf is in your current path.
 
 To start OpenOCD with USB-Blaster II JTAG adapter and run the SPL preloader, start a command prompt and enter:
 ```
-openocd -f interface/altera-usb-blaster2.cfg -f target/altera_fpgasoc_de.cfg -c "init; halt; c5_reset; halt; load_image u-boot-spl-nocache; resume 0xffff0000; sleep 200; halt; arm core_state arm"
+openocd -f interface/altera-usb-blaster2.cfg -f target/altera_fpgasoc_de.cfg -c "init; reset init; load_image u-boot-spl-nocache; resume 0xffff0000; sleep 200; halt; arm core_state arm"
 ```
 
 ## Connect with telnet
