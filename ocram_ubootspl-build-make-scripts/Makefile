@@ -23,6 +23,7 @@
 #   - flex
 #   - libssl-dev
 #   - bc
+#   - libgnutls28-dev
 #
 # This makefile is already complicated, but to keep things a bit more simple:
 #   - We assume the required global variables are already set
